@@ -80,4 +80,35 @@ export default class eventController {
         .send({ success: false, message: "Error in creating new event" });
     }
   };
+
+  // get specific photo by  object id
+  static getImage = async (req, res) => {
+    try {
+      const { _id } = req.query;
+      const image = await eventModel.findById(_id).select("files");
+
+      res
+        .status(200)
+        .send({ success: true, message: "Images Getting Successfully", image });
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .send({ success: false, message: "Error in getting Photo" });
+    }
+  };
+  // get a event by its unique Id
+  static getEvent = async (req, res) => {
+    try {
+      const { id } = req.query;
+
+      const event = await eventModel.findById(id).select("-files");
+      res.send(event);
+    } catch (error) {
+      console.log(error);
+      res
+        .status(500)
+        .send({ success: false, message: "Error in getting Event" });
+    }
+  };
 }
